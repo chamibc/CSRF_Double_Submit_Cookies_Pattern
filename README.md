@@ -1,1 +1,1 @@
-"# CSRF_Double_Submit_Cookies_Pattern" 
+"# CSRF_Synchronizer_Token_Pattern" 
