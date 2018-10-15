@@ -24,6 +24,7 @@ export class LoginformComponent implements OnInit {
           response = res;
           console.log(res);
           this.cookieService.set( 'SessionID', response.sessioniD );
+          this.cookieService.set( 'CSRF', response.csrftoken );
           this.router.navigate(['/dashboard']);
       },
       err => {

@@ -18,8 +18,6 @@ let userlist = {user: '', sessioniD: '', token: ''};
 
 app.use(session({
     genid: (req) => {
-      console.log('Inside the session middleware')
-      console.log(req.sessionID);
       return uuid()
     },
     secret: 'keyboard cat',
@@ -31,20 +29,15 @@ app.post('/login', (req, res) => {
     if(req.body.username == "admin" && req.body.password == "admin") {
         userlist = {
             user: req.body.username,
-            sessioniD: req.sessionID,
-            token: req.sessionID + req.timestamp
+            sessioniD: req.sessionID
         }
-        res.send({sessioniD: userlist.sessioniD});
+        res.send({sessioniD: userlist.sessioniD, csrftoken: req.sessionID + req.timestamp});
     }
-});
-
-app.get('/gettoken', function (req, res) {
-    res.send({csrf: userlist.token});
 });
 
 app.post('/transfer', (req, res) => {
     if(req.headers.sid == userlist.sessioniD) {
-        if(req.body.token == userlist.token) {
+        if(req.body.token == req.headers.csrf) {
             res.send({result: 'Transacation complete'});
         }
         else {
